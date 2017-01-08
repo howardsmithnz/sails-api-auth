@@ -1,0 +1,17 @@
+{
+  "name": "angular-auth",
+  "version": "1.0.0",
+  "description": "An Angular frontend to test Auth0 with a Node API from Sails.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular-jwt": "^0.0.9",
+    "angular-animate": "^1.4.9",
+    "angular": "^1.4.9",
+    "angular-material": "^1.0.4",
+    "angular-aria": "^1.4.9",
+    "angular-storage": "^0.0.13",
+    "angular-ui-router": "^0.2.17",
+    "auth0-angular": "^4.1.0"
+  }
+}
