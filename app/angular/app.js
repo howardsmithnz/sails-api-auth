@@ -10,5 +10,25 @@
         domain: 'yellow-card.au.auth0.com',
         clientID: 'GBVuG4oL20zxf9SCIB9sXn7Sz3XNZcr5'
       });
+
+      $urlRouterProvider.otherwise("/home");
+
+      $stateProvider
+        .state('home', {
+          url: '/home',
+          templateUrl: 'components/home/home.tpl.html'
+        })
+        .state('profile', {
+          url: '/profile',
+          templateUrl: 'components/profile/profile.tpl.html',
+          controller: 'profileController as user'
+        });
+
+      jwtInterceptorProvider.tokenGetter = function(store) {
+        return store.get('token');
+      }
+
+      $httpProvider.interceptors.push('jwtInterceptor');
+      
     });
 })();
