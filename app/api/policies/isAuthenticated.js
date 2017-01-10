@@ -5,7 +5,7 @@
 var jwt = require('express-jwt');
 
 var authCheck = jwt({
-  secret: new Buffer('pFgatPyyjLtE23mNUfhOj8ULm_USqjYULNBTWW9zgVnu0JDsLKwXLAcY6PAv1Bw6', 'base64'),
+  secret: new Buffer('cBCunsd-ldjZji_JiSjBJoSzHFBNke889jYm8zX52V5ul7Ty--qHRnBSv-MrYAtP'),
   audience: 'GBVuG4oL20zxf9SCIB9sXn7Sz3XNZcr5'
 });
 
