@@ -2,14 +2,15 @@
 
   'use strict';
 
-  angular
-    .module('authApp', ['auth0', 'angular-storage', 'angular-jwt', 'ngMaterial', 'ui.router'])
+  angular.module('authApp', ['auth0', 'angular-storage', 'angular-jwt', 'ngMaterial', 'ui.router'])
     .config(function($provide, authProvider, $urlRouterProvider, $stateProvider, $httpProvider, jwtInterceptorProvider) {
 
       authProvider.init({
         domain: 'yellow-card.au.auth0.com',
         clientID: 'GBVuG4oL20zxf9SCIB9sXn7Sz3XNZcr5'
       });
+
+
 
       $urlRouterProvider.otherwise("/home");
 
@@ -28,9 +29,13 @@
         return store.get('token');
       }
 
-      $httpProvider.interceptors.push('jwtInterceptor');
-      
-      function redirect($q, $injector, auth, store, $location) {
+      function redirect($q, $injector, $timeout, store, $location) {
+
+        var auth;
+        $timeout(function() {
+          auth = $injector.get('auth');
+        });
+
         return {
           responseError: function(rejection) {
 
@@ -45,6 +50,29 @@
         }
       }
       $provide.factory('redirect', redirect);
+      $httpProvider.interceptors.push('jwtInterceptor');
       $httpProvider.interceptors.push('redirect');
+    })
+    .run(function($rootScope, $state, auth, store, jwtHelper, $location) {
+
+      $rootScope.$on('$locationChangeStart', function() {
+        // Get the JWT that is saved in local storage
+        // and if it is there, check whether it is expired.
+        // If it isn't, set the user's auth state
+        var token = store.get('token');
+        if (token) {
+          if (!jwtHelper.isTokenExpired(token)) {
+            if (!auth.isAuthenticated) {
+              auth.authenticate(store.get('profile'), token);
+            }
+          }
+        }
+        else {
+          // Otherwise, redirect to the home route
+          $location.path('/home');
+        }
+      });
+
     });
+
 })();
